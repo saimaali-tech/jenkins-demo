@@ -2,76 +2,12 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout') {
+        stage('Hello') {
             steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],  // Or '*/master'
-                    extensions: [],
-                ])
+                echo 'Hello from Jenkins!'
+                sh 'pwd'
                 sh 'ls -la'
             }
-        }
-        
-        stage('Setup') {
-            steps {
-                sh '''
-                    echo "Setting up environment..."
-                    python3 --version || python --version || echo "Python check failed"
-                '''
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                sh '''
-                    echo "Testing Python addition program..."
-                    
-                    # Create a simple test script
-                    cat > test_add.py << 'EOF'
-def add_numbers(a, b):
-    """Simple addition function"""
-    return a + b
-
-# Test cases
-test_data = [
-    (2, 2, 4),
-    (5, 3, 8),
-    (10, -5, 5),
-    (0, 0, 0),
-    (2.5, 3.5, 6.0)
-]
-
-print("Running test cases...")
-all_pass = True
-
-for num1, num2, expected in test_data:
-    result = add_numbers(num1, num2)
-    if result == expected:
-        print(f"✓ {num1} + {num2} = {result}")
-    else:
-        print(f"✗ {num1} + {num2} = {result} (expected {expected})")
-        all_pass = False
-
-if all_pass:
-    print("\\n✅ All tests passed!")
-    exit(0)
-else:
-    print("\\n❌ Some tests failed!")
-    exit(1)
-EOF
-                    
-                    # Run the test
-                    python3 test_add.py
-                '''
-            }
-        }
-    }
-    
-    post {
-        always {
-            sh 'rm -f test_add.py 2>/dev/null || true'
-            echo "Pipeline execution completed"
         }
     }
 }
