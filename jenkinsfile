@@ -1,12 +1,12 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                echo "Running Python script..."
-                sh 'python3 test.py'
-            }
-        }
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        echo "Running Python script..."
+        sh 'python3 test.py 3 4' // replace 3 and 4 with values or pipeline params
+      }
     }
+  }
 }
+
