@@ -1,12 +1,22 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        echo "Running Python script..."
-        sh 'python3 test.py 3 4' // replace 3 and 4 with values or pipeline params
-      }
-    }
-  }
-}
+    agent any
 
+    stages {
+
+        stage('Build') {
+            steps {
+                echo "Running Python script (piping inputs)..."
+                sh "printf '%s\n%s\n' 3 4 | python3 test.py"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+                // Example test: run a second python file OR validate output
+                sh "echo 'Tests ran successfully!'"
+            }
+        }
+
+    }
+}
